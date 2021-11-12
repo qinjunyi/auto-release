@@ -74,7 +74,7 @@ const tag = async (nextVersion: string) => {
 };
 
 const build = async () => {
-  await run(`yarn build`);
+  await run(`npm run build`);
 };
 
 const publish = async (npmRegistry: string, npmAuthToken: string) => {
@@ -89,7 +89,8 @@ const main = async (params: ReleaseParams) => {
     currentVersion,
     npmRegistry,
     npmAuthToken,
-    mainBranch = 'master'
+    mainBranch = 'master',
+    needPublish = false
   } = params;
   try {
     const nextVersion = await promptNextVersion(currentVersion);
@@ -97,14 +98,25 @@ const main = async (params: ReleaseParams) => {
     // await test();
     await updatePkgVersion(nextVersion);
     await genChangelog();
-    await build();
+    const { needBuild } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'needBuild',
+        message: `Do you want to building? If you want to build, please make sure you include the 'build' script`
+      }
+    ]);
+    if (needBuild) {
+      await build();
+    }
     await push(nextVersion, mainBranch);
     await tag(nextVersion);
-    await publish(npmRegistry, npmAuthToken);
+    if (needPublish && npmRegistry && npmAuthToken) {
+      await publish(npmRegistry, npmAuthToken);
+    }
 
-    console.log(chalk.green(`Publish Success`));
+    console.log(chalk.green(`Release Success`));
   } catch (err) {
-    console.log(chalk.red(`Publish Fail: ${err}`));
+    console.log(chalk.red(`Release Fail: ${err}`));
   }
 };
 

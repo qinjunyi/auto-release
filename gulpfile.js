@@ -38,7 +38,6 @@ gulp.task('watch', async function () {
     ...inputOptions,
     output: [outputOptions],
     watch: {
-      include: 'src/**',
       exclude: 'node_modules/**'
     }
   });

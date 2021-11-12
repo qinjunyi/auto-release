@@ -1,9 +1,9 @@
 {
-  "name": "@jy/auto-release",
+  "name": "@resolverjy/auto-release",
   "version": "0.0.1",
   "description": "auto release for everything",
   "main": "/dist/main.js",
-  "author": "eeeyi",
+  "author": "resolverJY",
   "keywords": [
     "auto",
     "release"
