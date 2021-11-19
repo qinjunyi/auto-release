@@ -1,3 +1,5 @@
+declare module '*.json';
+
 export interface ReleaseParams {
   currentVersion: string;
   npmRegistry?: string;
