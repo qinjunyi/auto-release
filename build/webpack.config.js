@@ -1,8 +1,13 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const NpmDtsPlugin = require('npm-dts-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
+  mode: 'production',
+  entry: './index.ts',
+  // devtool: 'inline-source-map',
+  // watch: true,
   module: {
     rules: [
       {
@@ -10,13 +15,6 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader'
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              // 指定特定的ts编译配置，为了区分脚本的ts配置
-              configFile: path.resolve(__dirname, '../tsconfig.json')
-            }
           }
         ],
         exclude: /node_modules/
@@ -32,5 +30,17 @@ module.exports = {
     library: { name: 'release', type: 'umd', export: 'default' },
     filename: 'main.js',
     path: path.resolve(__dirname, '../dist')
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new NpmDtsPlugin({ entry: './index.ts', output: './dist/index.d.ts' })
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true
+      })
+    ]
   }
 };

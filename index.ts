@@ -3,8 +3,8 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { promisify } from 'util';
 import { inc as semverInc } from 'semver';
-import { ReleaseParams } from './types/index.d';
-import pkg from '../package.json';
+import type { ReleaseParams } from './typings';
+import pkg from './package.json';
 import { printLogo, waitFnLoading } from './lib';
 
 const exec = promisify(child_process.exec);
@@ -150,7 +150,5 @@ const main = async (params: ReleaseParams) => {
     console.log(chalk.red(`Release Fail: ${err}`));
   }
 };
-
 export type { ReleaseParams };
-
 export default main;
