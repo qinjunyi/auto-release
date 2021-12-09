@@ -122,7 +122,7 @@ const main = async (params: ReleaseParams) => {
       {
         type: 'confirm',
         name: 'needBuild',
-        message: `Do you want to building? If you want to build, please make sure there is a script named 'build'.`
+        message: `Do you want to build? If you want to build, please make sure there is a script named 'build'.`
       }
     ]);
     if (needBuild) {
