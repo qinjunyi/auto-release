@@ -21,6 +21,9 @@
   "engines": {
     "node": ">=12.0.0"
   },
+  "publishConfig": {
+    "registry": "https://www.npmjs.com/"
+  },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.14.8",
