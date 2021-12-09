@@ -10,6 +10,7 @@ import { printLogo, waitFnLoading } from './lib';
 const exec = promisify(child_process.exec);
 
 const run = async (command: string) => {
+  console.log();
   console.log(chalk.green(command));
   return await exec(command);
 };
@@ -56,16 +57,16 @@ const genChangelog = async () => {
   await run('npx conventional-changelog -p angular -i CHANGELOG.md -s');
 };
 
-const push = async (nextVersion: string, mainBranch: string) => {
+const push = async (
+  nextVersion: string,
+  mainBranch: string,
+  commitMsg?: string
+) => {
   const curBranch = await run('git rev-parse --abbrev-ref HEAD');
   const curBranchName = curBranch.stdout.toString().replace(/\s+/g, '');
   console.log();
   console.log('当前分支名:', curBranchName);
-  const { commitMsg } = await inquirer.prompt({
-    type: 'input',
-    name: 'commitMsg',
-    message: `Please briefly describe the changes in this release （default: 'ci: 🎡 release v${nextVersion}', but not required):`
-  });
+
   await run('git add .');
   await run(
     `git commit -m "ci: 🎡 release v${nextVersion}${
@@ -127,11 +128,16 @@ const main = async (params: ReleaseParams) => {
     if (needBuild) {
       await waitFnLoading(build, 'Start building', 'Build successful!')();
     }
-    await waitFnLoading(
-      push,
-      'Start pushing code',
-      'Push code successful!'
-    )(nextVersion, mainBranch);
+    const { commitMsg } = await inquirer.prompt({
+      type: 'input',
+      name: 'commitMsg',
+      message: `Please briefly describe the changes in this release （default: 'ci: 🎡 release v${nextVersion}', but not required):`
+    });
+    await waitFnLoading(push, 'Start pushing code', 'Push code successful!')(
+      nextVersion,
+      mainBranch,
+      commitMsg
+    );
     await waitFnLoading(
       tag,
       'Start adding tag',

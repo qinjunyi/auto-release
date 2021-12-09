@@ -1,6 +1,6 @@
 {
   "name": "@junyiqin/auto-release",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "auto release for everything",
   "main": "./dist/main.js",
   "types": "./dist/index.d.ts",
