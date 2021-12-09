@@ -64,7 +64,7 @@ const push = async (nextVersion: string, mainBranch: string) => {
   const { commitMsg } = await inquirer.prompt({
     type: 'input',
     name: 'commitMsg',
-    message: `请简要描述本次发版的改动（默认为 'ci: 🎡 release v${nextVersion}'，可不填）:`
+    message: `Please briefly describe the changes in this release （default: 'ci: 🎡 release v${nextVersion}', but not required):`
   });
   await run('git add .');
   await run(
