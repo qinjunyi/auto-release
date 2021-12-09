@@ -104,8 +104,8 @@ const main = async (params: ReleaseParams) => {
     needPublish = false
   } = params;
   try {
+    printLogo(`auto-release`);
     const nextVersion = await promptNextVersion(currentVersion);
-    printLogo(`auto-release v${pkg.version}`);
     // await test();
     await waitFnLoading(
       updatePkgVersion,
@@ -150,5 +150,7 @@ const main = async (params: ReleaseParams) => {
     console.log(chalk.red(`Release Fail: ${err}`));
   }
 };
+
 export type { ReleaseParams };
+
 export default main;
